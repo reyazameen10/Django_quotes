@@ -15,10 +15,10 @@ def submit(request):
 
     print(request.POST)
     #check if POST data was sent with HTTP POST message
-    if request.POST:
+    if request.method == "POST":
         #extract menu menu fields into variables
         name = request.POST['name']
-        favorite_food = request.POST['favorite_food']
+        favorite_food = request.POST['food']
 
         context = {
             'name': name,

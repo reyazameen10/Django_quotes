@@ -5,8 +5,10 @@
 <div>
     <h1>Contact Form</h1>
     
-    <form action="">
+    <form action="{% url 'restaurant:submit' %}" method="POST">
+        {% csrf_token %}
         
+    
         Name: <input type="text" name="name"></p>
         Favorite Food: <input type="text" name="food"></p>
         <input type="submit">
