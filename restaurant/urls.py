@@ -9,6 +9,11 @@ app_name = 'restaurant' # new line to set the app name for namespacing
 
 # URL patterns for the restaurant app
 urlpatterns = [
-    path("", views.show_menu, name="menu"), # Maps the URL
-    path("submit/", views.submit, name="submit"), # Maps the URL for form submission
+    path("", views.order, name="order"), # Maps the URL
+    path("submit/", views.submit, name="submit"), # Maps the URL
+    path('main/', views.main, name='main'),
+    path('order/', views.order, name='order'),
+    path('confirmation/', views.confirmation, name='confirmation'),
 ]
+
+#creating home page

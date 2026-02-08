@@ -1,11 +1,32 @@
-<!-- restaurant/templates/restaurant/menu.html-->
+<!-- restaurant/templates/restaurant/base.html-->
  {% load static %}
 <html>
 <head>
-    <title>Restaurant App</title>
+    <title>Boston Restaurant</title>
+    <p class="tagline">
+    Welcome to Boston Restaurant — serving cozy comfort food,
+    daily chef specials, and warm hospitality in the heart of the city.
+</p>
+    <link rel="stylesheet" href="{% static 'restaurant/styles.css' %}">
 </head>
+
 <body>
-    {% block content %}
-    {% endblock %}
+
+<div class="page">
+
+    <h1 class="title">🍝 Boston Restaurant</h1>
+
+    <!-- cozy restaurant hero image -->
+   <img class="hero-img"
+     src="https://images.unsplash.com/photo-1552566626-52f8b828add9"
+     alt="Cozy restaurant interior">
+
+    <div class="card">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+</div>
+
 </body>
 </html>

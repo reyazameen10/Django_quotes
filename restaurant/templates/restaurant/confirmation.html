@@ -1,14 +1,16 @@
-<!-- restaurant/templates/restaurant/confirmation.html -->
-{% extends 'restaurant/base.html' %}
+{% extends "restaurant/base.html" %}
 
 {% block content %}
-<div>
-    <h1>Thank you for your reservation!</h1>
-    <p>Hi, {{name}}!
-
-    </p>
-    <p>You said your favorite food was {{favorite_food}}.
-        
-    </p>
+<div class="confirmation">
+    <h1>Order Confirmed! 🎉</h1>
+    <p>Hi {{ name }}, your order is confirmed!</p>
+    <ul>
+        {% for item in items %}
+            <li>{{ item }}</li>
+        {% endfor %}
+    </ul>
+    <p><strong>Total: ${{ total }}</strong></p>
+    <p>Ready at: {{ ready_time }}</p>
+    <a href="{% url 'restaurant:order' %}">New Order</a>
 </div>
 {% endblock %}

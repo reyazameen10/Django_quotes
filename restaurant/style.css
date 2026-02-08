@@ -1,0 +1,79 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 40px;
+}
+
+img {
+    margin: 10px;
+}
+
+/* whole page */
+body {
+    margin: 0;
+    font-family: Georgia, serif;
+    background: linear-gradient(#3b2f2f, #5a4634);
+    color: #f5efe6;
+}
+
+/* center everything */
+.page {
+    max-width: 700px;
+    margin: 50px auto;
+    text-align: center;
+    padding: 20px;
+}
+
+/* title */
+.title {
+    color: #f3d19c;
+    font-size: 40px;
+    margin-bottom: 20px;
+}
+
+/* cozy hero image */
+.hero-img {
+    width: 100%;
+    max-width: 420px;   /* keeps it cozy */
+    height: 240px;
+    object-fit: cover;
+    display: block;
+    margin: 0 auto 25px auto;
+    border-radius: 14px;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.35);
+}
+/* content box */
+.card {
+    background-color: #6b4f3a;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 6px 15px rgba(168, 23, 23, 0.5);
+}
+
+/* headings */
+h2, h3 {
+    color: #ffd27f;
+}
+
+/* list style */
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    padding: 6px;
+    font-size: 18px;
+}
+
+/* highlight text */
+b {
+    color: #ffe3a3;
+}
+
+.tagline {
+    font-size: 18px;
+    color: #f5e6c8;
+    max-width: 600px;
+    margin: 0 auto 20px auto;
+    line-height: 1.6;
+}
