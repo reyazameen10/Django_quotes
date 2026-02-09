@@ -11,7 +11,7 @@ app_name = 'restaurant' # new line to set the app name for namespacing
 urlpatterns = [
     path("", views.order, name="order"), # Maps the URL
     path("submit/", views.submit, name="submit"), # Maps the URL
-    path('main/', views.main, name='main'),
+    path('main/', views.show_menu, name='show_menu'), # Maps the URL
     path('order/', views.order, name='order'),
     path('confirmation/', views.confirmation, name='confirmation'),
 ]
