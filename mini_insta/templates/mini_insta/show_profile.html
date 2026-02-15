@@ -1,0 +1,15 @@
+{% extends 'mini_insta/base.html' %}
+
+{% block content %}
+<div class="profile-detail">
+    <img src="{{ profile.profile_image_url|default:'/static/default-avatar.png' }}" alt="{{ profile.display_name }}" style="width: 150px; height: 150px; border-radius: 50%;">
+    <h1>{{ profile.display_name }}</h1>
+    <p><strong>@{{ profile.username }}</strong></p>
+    <p>{{ profile.bio_text }}</p>
+    <p><small>Joined: {{ profile.join_date }}</small></p>
+    
+    <!-- Future: followers/posts will go here -->
+    <div>Followers: 0 | Following: 0</div>
+</div>
+<a href="{% url 'show_all_profiles' %}">← Back to All Profiles</a>
+{% endblock %}

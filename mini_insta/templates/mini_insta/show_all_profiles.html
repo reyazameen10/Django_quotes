@@ -1,0 +1,20 @@
+{% extends 'mini_insta/base.html' %}
+
+{% block content %}
+<h1>All Profiles</h1>
+{% if profiles %}
+    {% for profile in profiles %}
+    <div style="border: 1px solid #ccc; margin: 10px; padding: 10px;">
+        <a href="{% url 'show_profile' profile.pk %}">
+            <img src="{{ profile.profile_image_url|default:'/static/default-avatar.png' }}" 
+                 alt="{{ profile.display_name }}" 
+                 style="width: 50px; height: 50px; border-radius: 50%;">
+            {{ profile.display_name }} (@{{ profile.username }})
+        </a>
+        <br><small>{{ profile.bio_text|truncatewords:10 }}</small>
+    </div>
+    {% endfor %}
+{% else %}
+    <p>No profiles yet. <a href="/admin/mini_insta/profile/add/">Add some via Admin</a></p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mini Insta</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .header { background: #3897f0; color: white; padding: 20px; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🏷️ Mini Insta</h1>
+        <a href="{% url 'show_all_profiles' %}" style="color: white;">All Profiles</a>
+    </div>
+    
+    {% block content %}{% endblock %}
+    
+    <footer style="margin-top: 40px; text-align: center; color: #666;">
+        <p>CS412 Mini Instagram &copy; 2026</p>
+    </footer>
+</body>
+</html>
