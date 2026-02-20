@@ -1,0 +1,21 @@
+<!-- mini_insta/templates/mini_insta/show_post.html -->
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ post.user.username }}'s Post</title>
+</head>
+<body>
+    <h1>{{ post.user.username }}</h1> <!-- Author -->
+
+    {% if post.image %}
+        <img src="{{ object.image_url }}" alt="Post image" style="max-width:500px;">
+    {% endif %}
+
+    {% if post.caption %}
+        <p>{{ post.caption }}</p>
+    {% endif %}
+    
+    <p>Posted on: {{ post.created_at }}</p>
+</body>
+</html> 

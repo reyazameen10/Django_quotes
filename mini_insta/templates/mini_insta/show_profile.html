@@ -1,3 +1,4 @@
+<!-- mini_insta/show_profile.html -->
 {% extends 'mini_insta/base.html' %}
 
 {% block content %}
@@ -11,5 +12,26 @@
     <!-- Future: followers/posts will go here -->
     <div>Followers: 0 | Following: 0</div>
 </div>
+
+  <!-- Create Post button -->
+    <p><a href="{% url 'create_post' profile.pk %}">➕ Create Post</a></p>
+</div>
+
 <a href="{% url 'show_all_profiles' %}">← Back to All Profiles</a>
+
+<!-- Optional: list posts here -->
+{% if profile.posts.all %}
+    <h2>Posts</h2>
+  {% for post in profile.posts.all %}
+    <div class="post">
+        <a href="{% url 'show_post' post.pk %}">
+            <img src="{{ post.image_url }}" alt="Post image" style="max-width:300px;">
+        </a>
+        <p>{{ post.caption }}</p>
+    </div>
+{% endfor %}
+{% else %}
+    <p>No posts yet.</p>
+{% endif %}
+
 {% endblock %}
