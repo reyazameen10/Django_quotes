@@ -57,3 +57,45 @@ class ShowPostView(DetailView):
     def get_success_url(self):
 
         return reverse('show_post', kwargs={'pk': self.object.pk})
+    
+class ProfileFeedView(DetailView):
+    model = Profile
+    template_name = 'mini_insta/profile_feed.html'
+    context_object_name = 'profile'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        profile = self.get_object()
+        context['posts'] = Post.objects.filter(profile=profile)
+        return context
+
+class FollowersListView(DetailView):
+    model = Profile
+    template_name = "mini_insta/followers.html"
+    context_object_name = "profile"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['followers'] = self.object.get_followers()
+        return context
+
+class FollowingListView(DetailView):
+    model = Profile
+    template_name = "mini_insta/following.html"
+    context_object_name = "profile"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['following'] = self.object.get_following()
+        return context
+
+class SearchView(ListView):
+    model = Profile
+    template_name = "mini_insta/search.html"
+    context_object_name = "profiles"
+
+    def get_queryset(self):
+        query = self.request.GET.get("q")
+        if query:
+            return Profile.objects.filter(display_name__icontains=query)
+        return Profile.objects.none()

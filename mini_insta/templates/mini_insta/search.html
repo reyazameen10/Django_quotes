@@ -1,0 +1,37 @@
+<!-- mini_insta/ search.html-->
+
+{% extends 'mini_insta/base.html' %}
+
+{% block content %}
+<div style="max-width: 800px; margin: 0 auto;">
+
+<h1>Search</h1>
+
+<form method="get" action="">
+    <input type="text" name="q" placeholder="Search profiles..." value="{{ request.GET.q }}">
+    <button type="submit">Search</button>
+</form>
+
+<hr>
+
+{% if profiles %}
+    <h2>Results</h2>
+
+    {% for profile in profiles %}
+        <p>
+            <a href="{% url 'show_profile' profile.pk %}">
+                {{ profile.display_name }}
+            </a>
+        </p>
+    {% empty %}
+        <p>No results found</p>
+    {% endfor %}
+
+{% endif %}
+
+<p>
+<a href="{% url 'show_profile' p.pk %}">← Back to Profile</a>
+</p>
+
+</div>
+{% endblock %}

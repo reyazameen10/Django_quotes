@@ -17,7 +17,14 @@
     <p><a href="{% url 'create_post' profile.pk %}">➕ Create Post</a></p>
 </div>
 
-<a href="{% url 'show_all_profiles' %}">← Back to All Profiles</a>
+<!-- Navigation bar - REPLACE THE BROKEN PART WITH THIS -->
+<nav style="margin: 20px 0; padding: 10px; background: #f0f0f0; border-radius: 5px;">
+    <a href="{% url 'profile_feed' profile.pk %}">🏠 Feed</a> | 
+    <a href="{% url 'show_profile' profile.pk %}">👤 Profile</a> | 
+    <a href="{% url 'show_followers' profile.pk %}">👥 Followers</a> | 
+    <a href="{% url 'show_following' profile.pk %}">👤 Following</a> | 
+    <a href="{% url 'search' profile.pk %}">🔍 Search</a>
+</nav>
 
 <!-- Optional: list posts here -->
 {% if profile.posts.all %}

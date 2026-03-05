@@ -1,0 +1,51 @@
+
+<!--mini_insta/ search_result.html-->
+{% extends 'mini_insta/base.html' %}
+
+{% block content %}
+<div style="max-width: 800px; margin: 0 auto;">
+    <h1>Search results for "{{ query }}"</h1>
+    
+    {% if profiles or posts %}
+        <!-- Profiles -->
+        <section style="margin-bottom: 40px;">
+            <h2>Profiles ({{ profiles.count }})</h2>
+            {% for p in profiles %}
+                <div style="margin-bottom: 15px; padding: 10px; border-bottom: 1px solid #eee;">
+                    <a href="{% url 'show_profile' p.pk %}">
+                        <strong>{{ p.display_name }}</strong> (@{{ p.username }})
+                    </a>
+                    <p>{{ p.bio|truncatewords:20 }}</p>
+                </div>
+            {% empty %}
+                <p>No profiles match "{{ query }}"</p>
+            {% endfor %}
+        </section>
+        
+        <!-- Posts -->
+        <section>
+            <h2>Posts ({{ posts.count }})</h2>
+            {% for post in posts %}
+                <div style="margin-bottom: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 8px;">
+                    <a href="{% url 'show_post' post.pk %}">
+                        <strong>{{ post.caption|truncatewords:15 }}</strong>
+                    </a>
+                    <p><small>by {{ post.profile.display_name }} • {{ post.created_at|date:"M d" }}</small></p>
+                </div>
+            {% empty %}
+                <p>No posts match "{{ query }}"</p>
+            {% endfor %}
+        </section>
+    {% else %}
+        <div style="text-align: center; padding: 50px;">
+            <h3>No results found</h3>
+            <p>Try a different search term</p>
+        </div>
+    {% endif %}
+    
+    <div style="margin-top: 30px;">
+        <a href="{% url 'search' profile.pk %}">← New Search</a> |
+        <a href="{% url 'show_profile' profile.pk %}">← Back to Profile</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,19 @@
+<!-- mini_insta/ followers.html -->
+
+{% extends 'mini_insta/base.html' %}
+
+{% block content %}
+
+<h2>Followers</h2>
+
+<ul>
+{% for profile in object_list %}
+    <li>
+        <a href="{% url 'show_profile' profile.pk %}">
+            {{ profile.display_name }}
+        </a>
+    </li>
+{% endfor %}
+</ul>
+
+{% endblock %}
