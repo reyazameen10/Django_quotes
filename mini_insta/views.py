@@ -98,4 +98,11 @@ class SearchView(ListView):
         query = self.request.GET.get("q")
         if query:
             return Profile.objects.filter(display_name__icontains=query)
-        return Profile.objects.none()
+        return Profile.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        profile = Profile.objects.get(pk=self.kwargs['pk'])
+        context['profile'] = profile
+        context['pk'] = self.kwargs['pk']
+        return context

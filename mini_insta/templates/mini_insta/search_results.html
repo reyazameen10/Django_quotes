@@ -12,7 +12,7 @@
             <h2>Profiles ({{ profiles.count }})</h2>
             {% for p in profiles %}
                 <div style="margin-bottom: 15px; padding: 10px; border-bottom: 1px solid #eee;">
-                    <a href="{% url 'show_profile' p.pk %}">
+                    <a href="{% url 'show_profile' pk %}">
                         <strong>{{ p.display_name }}</strong> (@{{ p.username }})
                     </a>
                     <p>{{ p.bio|truncatewords:20 }}</p>
@@ -44,8 +44,8 @@
     {% endif %}
     
     <div style="margin-top: 30px;">
-        <a href="{% url 'search' profile.pk %}">← New Search</a> |
-        <a href="{% url 'show_profile' profile.pk %}">← Back to Profile</a>
+            <a href="{% url 'search' pk %}">← New Search</a> |
+            <a href="{% url 'show_profile' pk %}">← Back to Profile</a>
     </div>
 </div>
 {% endblock %}

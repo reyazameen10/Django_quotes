@@ -9,14 +9,34 @@ class Profile(models.Model):
     profile_image_url = models.URLField(blank=True)
     bio_text = models.TextField(blank=True, max_length=500)
     join_date = models.DateField()
-    
+
     def __str__(self):
-        return f'{self.username}'
+        return self.username
 
-        # The Post model represents a post made by a user (Profile). Each post has an image URL, an optional caption, and a timestamp for when it was created. The profile field is a foreign key that links the post to the Profile that created it. The related_name='posts' allows us to access all posts of a profile using profile.posts.
+    # Followers
+    def get_followers(self):
+        follows = Follow.objects.filter(profile=self)
+        return [f.follower_profile for f in follows]
 
-class Post(models.Model):  
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='posts')
+    def get_num_followers(self):
+        return Follow.objects.filter(profile=self).count()
+
+# Following
+    def get_following(self):
+        follows = Follow.objects.filter(follower_profile=self)
+        return [f.profile for f in follows]
+
+    def get_num_following(self):
+        return Follow.objects.filter(follower_profile=self).count()
+
+
+# Post Model
+class Post(models.Model):
+    profile = models.ForeignKey(
+        Profile,
+        on_delete=models.CASCADE,
+        related_name='posts'
+    )
     image_url = models.URLField()
     caption = models.TextField(blank=True, max_length=300)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -24,6 +44,22 @@ class Post(models.Model):
     def __str__(self):
         return f"Post by {self.profile.username}"
 
-        def get_absolute_url(self):
-            '''Return the URL to access a detail record for this post.'''
-            return reverse('post', kwargs={'pk': self.pk})
+    def get_absolute_url(self):
+        return reverse('post', kwargs={'pk': self.pk})
+
+
+# Follow Model 
+class Follow(models.Model):
+    profile = models.ForeignKey(
+        Profile,
+        related_name='followers',
+        on_delete=models.CASCADE
+    )
+    follower_profile = models.ForeignKey(
+        Profile,
+        related_name='following',
+        on_delete=models.CASCADE
+    )
+
+    def __str__(self):
+        return f"{self.follower_profile} follows {self.profile}"

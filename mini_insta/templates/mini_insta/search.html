@@ -19,7 +19,7 @@
 
     {% for profile in profiles %}
         <p>
-            <a href="{% url 'show_profile' profile.pk %}">
+            <a href="{% url 'show_profile' pk %}">
                 {{ profile.display_name }}
             </a>
         </p>
@@ -29,9 +29,9 @@
 
 {% endif %}
 
-<p>
-<a href="{% url 'show_profile' p.pk %}">← Back to Profile</a>
-</p>
+        <p>
+            <a href="{% url 'show_profile' pk %}">← Back to Profile</a>
+        </p>
 
 </div>
 {% endblock %}
