@@ -1,9 +1,12 @@
 # mini_insta/models.py
 
+from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
 
 class Profile(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE) #new
+
     username = models.CharField(max_length=50, unique=True)
     display_name = models.CharField(max_length=100)
     profile_image_url = models.URLField(blank=True)
@@ -40,6 +43,7 @@ class Post(models.Model):
     image_url = models.URLField()
     caption = models.TextField(blank=True, max_length=300)
     created_at = models.DateTimeField(auto_now_add=True)
+    image = models.ImageField(upload_to='posts/')
 
     def __str__(self):
         return f"Post by {self.profile.username}"
