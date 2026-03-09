@@ -6,8 +6,7 @@ from .models import Post
 
 class CreatePostForm(forms.ModelForm):
     '''Define a form for creating a new post.'''
-    image_url = forms.URLField(required=False)
 
     class Meta:
         model = Post
-        fields = ['caption']   
+        fields = ['image', 'caption']

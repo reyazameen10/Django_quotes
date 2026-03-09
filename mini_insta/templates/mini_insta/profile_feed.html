@@ -1,13 +1,14 @@
 <!-- mini_insta / rofile_feed.html -->
-
 {% extends 'mini_insta/base.html' %}
+{% load static %}
 
 {% block content %}
+
 
 <h2>{{ profile.display_name }}'s Feed</h2>
 
 {% for post in object_list %}
-    <div style="border:1px solid gray; padding:10px; margin:10px;">
+    <div style="border:1px solid rgb(194, 11, 11); padding:10px; margin:10px;">
         <p>{{ post.message }}</p>
         <p><small>{{ post.created_at }}</small></p>
 

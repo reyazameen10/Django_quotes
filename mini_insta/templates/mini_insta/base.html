@@ -1,22 +1,184 @@
+
+ <!-- mini_insta/templates/mini_insta/base.html -->
+
+<!-- mini_insta/templates/mini_insta/base.html -->
+
+{% load static %}
+
 <!DOCTYPE html>
+
 <html>
 <head>
-    <title>Mini Insta</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 40px; }
-        .header { background: #3897f0; color: white; padding: 20px; text-align: center; }
-    </style>
+<title>{% block title %}Mini Insta{% endblock %}</title>
+<meta charset="utf-8">
+
+<style>
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background: #b0c64d;
+}
+
+.header {
+    background: linear-gradient(45deg, #b94106, #0dc810);
+    color: rgb(18, 8, 208);
+    padding: 20px;
+    text-align: center;
+    border-radius: 10px;
+    margin-bottom: 30px;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 2em;
+}
+
+nav {
+    margin-top: 10px;
+}
+
+nav a {
+    color: rgb(4, 33, 200);
+    text-decoration: none;
+    margin: 0 15px;
+    font-weight: 500;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+.user-info {
+    margin-top: 10px;
+}
+
+button {
+    background: rgb(244, 244, 2);
+    color: #405DE6;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+button:hover {
+    background: #0ab2cc;
+}
+
+main {
+    max-width: 900px;
+    margin: auto;
+}
+
+footer {
+    text-align: center;
+    margin-top: 50px;
+    color: #0d0101;
+    padding: 20px;
+}
+
+/* PROFILE GRID */
+
+.profile-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+    margin-top: 25px;
+}
+
+.profile-card {
+    background: rgb(95, 32, 32);
+    border-radius: 14px;
+    padding: 25px;
+    border: 1px solid #75045e;
+    text-align: center;
+    transition: all 0.2s ease;
+}
+
+.profile-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+.profile-img img {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 12px;
+}
+
+.profile-name {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.profile-bio {
+    font-size: 14px;
+    color: #0e0303;
+    margin-bottom: 15px;
+}
+
+.follow-btn {
+    background: #5b69ae;
+    color: rgb(238, 230, 232);
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+.follow-btn:hover {
+    background: #3146b3;
+}
+
+</style>
+
 </head>
+
 <body>
-    <div class="header">
-        <h1>🏷️ Mini Insta</h1>
-        <a href="{% url 'show_all_profiles' %}" style="color: white;">All Profiles</a>
-    </div>
-    
-    {% block content %}{% endblock %}
-    
-    <footer style="margin-top: 40px; text-align: center; color: #666;">
-        <p>CS412 Mini Instagram &copy; 2026</p>
-    </footer>
+
+<header class="header">
+<h1>🐶 📚/🎓 Mini Insta</h1>
+
+<nav>
+
+<a href="{% url 'show_all_profiles' %}">All Profiles</a> <a href="/admin/">Admin</a>
+
+{% if user.is_authenticated %}
+
+<a href="{% url 'my_profile' %}">My Profile</a>
+
+<form method="POST" action="{% url 'logout' %}" style="display:inline;">
+{% csrf_token %}
+<button type="submit">Logout</button>
+</form>
+
+<div class="user-info">
+Logged in as <strong>{{ user.username }}</strong>
+</div>
+
+{% else %}
+
+<a href="{% url 'login' %}">Login</a>
+
+{% endif %}
+
+</nav>
+</header>
+
+<main>
+{% block content %}
+{% endblock %}
+</main>
+
+<footer>
+CS412 Mini Insta © 2026
+</footer>
+
 </body>
 </html>

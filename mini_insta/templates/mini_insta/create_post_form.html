@@ -1,15 +1,13 @@
 <!-- mini_insta/templates/create_post_form.html 
  display the HTML form for creating a new post -->
-
  {% extends 'mini_insta/base.html' %}
+{% load static %}
 
- {% block content %}
+{% block content %}
    <h1>Create a New Post</h1>
-   <form method="post" enctype="multipart/form-data">
-     {% csrf_token %}
-     {{ form.as_p }}
-    
-     <button type="submit">Create Post</button>
-     <a href="{% url 'show_profile' profile.pk %}">Cancel</a>
-   </form>
+ <form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Post</button>
+</form>
  {% endblock %}

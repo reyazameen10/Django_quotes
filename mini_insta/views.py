@@ -1,73 +1,88 @@
 # mini_insta/views.py
 
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
-from django.views.generic import ListView, DetailView, CreateView
-from .models import Profile, Post
-from .forms import CreatePostForm #import the form class for creating a new post
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, TemplateView
 from django.urls import reverse
 
+from .models import Profile, Post, Like, Follow
+from .forms import CreatePostForm
+from django.views.generic import View
+from .models import Like
+from django.shortcuts import redirect
+from .models import Follow
+from django.views.generic import TemplateView
+
+from .models import Profile
+
+
+# Mixin for login and profile
+# ---------------------------
+class MiniInstaLoginRequiredMixin(LoginRequiredMixin):
+    login_url = '/mini_insta/login/'
+
+    def get_login_url(self):
+        return self.login_url
+
+    def get_profile(self):
+        return get_object_or_404(Profile, user=self.request.user)
+
+
+# ---------------------------
+# Profile Views
+# ---------------------------
 class ProfileListView(ListView):
-    '''Define a view to show all the profiles.'''
     model = Profile
-    template_name = 'mini_insta/show_all_profiles.html'
-    context_object_name = 'profiles'
+    template_name = "mini_insta/show_all_profiles.html"
+    context_object_name = "profiles"
+
+    def get_queryset(self):
+        return Profile.objects.all().order_by('-id')
 
 
 class ProfileDetailView(DetailView):
-    '''Define a view to show one profile.'''
+    model = Profile
+    template_name = 'mini_insta/show_profile.html'
+    context_object_name = 'profile'
+    
+
+class MyProfileView(MiniInstaLoginRequiredMixin, DetailView):
     model = Profile
     template_name = 'mini_insta/show_profile.html'
     context_object_name = 'profile'
 
-# class CreatePostView(CreateView): 
-class CreatePostView(CreateView):
-    form_class = CreatePostForm
-    template_name = 'mini_insta/create_post_form.html'
+    def get_object(self):
+        return get_object_or_404(Profile, user=self.request.user)
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        profile = get_object_or_404(Profile, pk=self.kwargs['pk'])
-        context['profile'] = profile
-        return context
 
-    def form_valid(self, form):
-        profile = get_object_or_404(Profile, pk=self.kwargs['pk'])
-        form.instance.profile = profile  # attach profile to the post
-        response = super().form_valid(form)
-
-        # attach image if provided
-        image_url = self.request.POST.get('image_url')
-        if image_url:
-            Post.objects.create(
-                profile=self.object.profile,
-                caption=self.object.caption,
-                image_url=image_url
-            )
-
-        return response
-
-    def get_success_url(self):
-        return reverse('show_post', kwargs={'pk': self.object.pk})
-
-class ShowPostView(DetailView):
-    model = Post
-    template_name = 'mini_insta/show_post.html'
-    context_object_name = 'post'
-    
-    def get_success_url(self):
-
-        return reverse('show_post', kwargs={'pk': self.object.pk})
-    
-class ProfileFeedView(DetailView):
+class UpdateProfileView(MiniInstaLoginRequiredMixin, UpdateView):
     model = Profile
-    template_name = 'mini_insta/profile_feed.html'
-    context_object_name = 'profile'
+    fields = ['display_name', 'bio_text', 'profile_image_url']
+    template_name = 'mini_insta/update_profile_form.html'
+    success_url = '/mini_insta/profile/'
+
+    def get_object(self):
+        return get_object_or_404(Profile, user=self.request.user)
+
+
+# ---------------------------
+# Profile Feed / Followers / Following
+# ---------------------------
+class ProfileFeedView(ListView):
+    model = Post
+    template_name = "mini_insta/profile_feed.html"
+    context_object_name = "posts"
+
+    def get_queryset(self):
+        pk = self.kwargs['pk']
+        profile = Profile.objects.get(pk=pk)
+        return Post.objects.filter(profile=profile).order_by('-created_at')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        profile = self.get_object()
-        context['posts'] = Post.objects.filter(profile=profile)
+        context['profile'] = Profile.objects.get(pk=self.kwargs['pk'])
         return context
+    
 
 class FollowersListView(DetailView):
     model = Profile
@@ -76,8 +91,12 @@ class FollowersListView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['followers'] = self.object.get_followers()
+        profile = self.get_object()
+
+        context["followers"] = Follow.objects.filter(profile=profile)
+
         return context
+
 
 class FollowingListView(DetailView):
     model = Profile
@@ -86,10 +105,17 @@ class FollowingListView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['following'] = self.object.get_following()
+        profile = self.get_object()
+
+        context["following"] = Follow.objects.filter(follower_profile=profile)
+
         return context
 
-class SearchView(ListView):
+
+# ---------------------------
+# Search
+# ---------------------------
+class SearchView(MiniInstaLoginRequiredMixin, ListView):
     model = Profile
     template_name = "mini_insta/search.html"
     context_object_name = "profiles"
@@ -100,9 +126,129 @@ class SearchView(ListView):
             return Profile.objects.filter(display_name__icontains=query)
         return Profile.objects.all()
 
+
+# ---------------------------
+# Post Views
+# ---------------------------
+class CreatePostView(CreateView):
+    model = Post
+    form_class = CreatePostForm
+    template_name = "mini_insta/create_post_form.html"
+
+    def form_valid(self, form):
+        pk = self.kwargs['pk']
+        profile = Profile.objects.get(pk=pk)
+
+        form.instance.profile = profile
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        pk = self.kwargs['pk']
+        return reverse('show_profile', kwargs={'pk': pk})
+    
+
+class ShowPostView(MiniInstaLoginRequiredMixin, DetailView):
+    model = Post
+    template_name = "mini_insta/show_post.html"
+    context_object_name = "post"
+
+    def get_object(self):
+        return get_object_or_404(Post, pk=self.kwargs['pk'])
+    
+class LikePostView(MiniInstaLoginRequiredMixin, View):
+
+    def dispatch(self, request, *args, **kwargs):
+
+        post = get_object_or_404(Post, pk=kwargs['pk'])
+        profile = self.get_profile()
+
+        Like.objects.create(post=post, profile=profile)
+
+        return redirect('show_post', pk=post.pk)
+    
+
+class FollowView(MiniInstaLoginRequiredMixin, View):
+
+    def post(self, request, *args, **kwargs):
+
+        other_profile = get_object_or_404(Profile, pk=kwargs['pk'])
+        my_profile, created = Profile.objects.get_or_create(user=request.user)
+
+        if other_profile != my_profile:
+            Follow.objects.get_or_create(
+                profile=other_profile,
+                follower_profile=my_profile
+            )
+
+        return redirect('show_profile', pk=other_profile.pk)
+
+    def get(self, request, *args, **kwargs):
+        return redirect('show_profile', pk=kwargs['pk'])
+    
+    
+class ProfileDetailView(DetailView):
+    model = Profile
+    template_name = 'mini_insta/show_profile.html'
+    context_object_name = 'profile'
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        profile = Profile.objects.get(pk=self.kwargs['pk'])
-        context['profile'] = profile
-        context['pk'] = self.kwargs['pk']
+
+        profile = self.get_object()
+        context['posts'] = Post.objects.filter(profile=profile).order_by('-created_at')
+
         return context
+    
+class DeleteFollowView(MiniInstaLoginRequiredMixin, View):
+
+    def dispatch(self, request, *args, **kwargs):
+
+        other_profile = get_object_or_404(Profile, pk=kwargs['pk'])
+        my_profile = self.get_profile()
+
+        Follow.objects.filter(
+            profile=other_profile,
+            follower_profile=my_profile
+        ).delete()
+
+        return redirect('show_profile', pk=other_profile.pk)
+
+
+class LogoutConfirmationView(TemplateView):
+    template_name = "mini_insta/logged_out.html"
+    
+
+class AddLikeView(LoginRequiredMixin, View):
+
+    def dispatch(self, request, *args, **kwargs):
+        post = get_object_or_404(Post, pk=self.kwargs['pk'])
+        profile = Profile.objects.get(user=request.user)
+
+        if post.profile != profile:
+            Like.objects.get_or_create(profile=profile, post=post)
+
+        return redirect(request.META.get('HTTP_REFERER'))
+    
+class DeleteLikeView(LoginRequiredMixin, View):
+
+    def dispatch(self, request, *args, **kwargs):
+        post = get_object_or_404(Post, pk=self.kwargs['pk'])
+        profile = Profile.objects.get(user=request.user)
+
+        Like.objects.filter(profile=profile, post=post).delete()
+
+        return redirect(request.META.get('HTTP_REFERER'))
+    
+class AddFollowView(LoginRequiredMixin, View):
+
+    def dispatch(self, request, *args, **kwargs):
+        other_profile = get_object_or_404(Profile, pk=self.kwargs['pk'])
+        my_profile = Profile.objects.get(user=request.user)
+
+        if other_profile != my_profile:
+            Follow.objects.get_or_create(
+                follower=my_profile,
+                following=other_profile
+            )
+
+        return redirect('show_profile', pk=other_profile.pk)

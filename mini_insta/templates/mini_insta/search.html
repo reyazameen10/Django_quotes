@@ -1,6 +1,6 @@
 <!-- mini_insta/ search.html-->
-
-{% extends 'mini_insta/base.html' %}
+ {% extends 'mini_insta/base.html' %}
+{% load static %}
 
 {% block content %}
 <div style="max-width: 800px; margin: 0 auto;">
@@ -19,7 +19,7 @@
 
     {% for profile in profiles %}
         <p>
-            <a href="{% url 'show_profile' pk %}">
+            <a href="{% url 'show_profile' profile.id %}">
                 {{ profile.display_name }}
             </a>
         </p>
@@ -30,7 +30,7 @@
 {% endif %}
 
         <p>
-            <a href="{% url 'show_profile' pk %}">← Back to Profile</a>
+            <a href="{% url 'show_profile' request.user.profile.pk %}">← Back to Profile</a>
         </p>
 
 </div>

@@ -1,44 +1,91 @@
 <!-- mini_insta/show_profile.html -->
+
 {% extends 'mini_insta/base.html' %}
+{% load static %}
 
 {% block content %}
+
 <div class="profile-detail">
-    <img src="{{ profile.profile_image_url|default:'/static/default-avatar.png' }}" alt="{{ profile.display_name }}" style="width: 150px; height: 150px; border-radius: 50%;">
-    <h1>{{ profile.display_name }}</h1>
-    <p><strong>@{{ profile.username }}</strong></p>
-    <p>{{ profile.bio_text }}</p>
-    <p><small>Joined: {{ profile.join_date }}</small></p>
-    
-    <!-- Future: followers/posts will go here -->
-    <div>Followers: 0 | Following: 0</div>
+
+<img src="{{ profile.profile_image_url|default:'/static/default-avatar.png' }}"
+style="width:150px;height:150px;border-radius:50%;">
+
+<h1>{{ profile.display_name }}</h1>
+
+<p><strong>@{{ profile.user.username }}</strong></p>
+
+<p>{{ profile.bio_text }}</p>
+
+<p><small>Joined: {{ profile.join_date }}</small></p>
+
+<div>
+Followers: {{ profile.followers.count }} |
+Following: {{ profile.following.count }}
 </div>
 
-  <!-- Create Post button -->
-    <p><a href="{% url 'create_post' profile.pk %}">➕ Create Post</a></p>
-</div>
+{% if user.is_authenticated %}
 
-<!-- Navigation bar - REPLACE THE BROKEN PART WITH THIS -->
-<nav style="margin: 20px 0; padding: 10px; background: #f0f0f0; border-radius: 5px;">
-    <a href="{% url 'profile_feed' profile.pk %}">🏠 Feed</a> | 
-    <a href="{% url 'show_profile' profile.pk %}">👤 Profile</a> | 
-    <a href="{% url 'show_followers' profile.pk %}">👥 Followers</a> | 
-    <a href="{% url 'show_following' profile.pk %}">👤 Following</a> | 
-    <a href="{% url 'search' profile.pk %}">🔍 Search</a>
-</nav>
-
-<!-- Optional: list posts here -->
-{% if profile.posts.all %}
-    <h2>Posts</h2>
-  {% for post in profile.posts.all %}
-    <div class="post">
-        <a href="{% url 'show_post' post.pk %}">
-            <img src="{{ post.image_url }}" alt="Post image" style="max-width:300px;">
-        </a>
-        <p>{{ post.caption }}</p>
-    </div>
-{% endfor %}
-{% else %}
-    <p>No posts yet.</p>
+{% if request.user.profile == profile %}
+<a href="{% url 'create_post' profile.pk %}">
+    <button>Create Post</button>
+</a>
 {% endif %}
 
+{% if request.user.profile != profile %}
+<form method="POST" action="{% url 'follow' profile.pk %}">
+    {% csrf_token %}
+    <button type="submit">Follow</button>
+</form>
+{% endif %}
+
+{% endif %}
+
+</div>
+
+<br>
+
+<div class="nav-bar">
+<a href="{% url 'profile_feed' profile.pk %}">🏠 Feed</a> |
+<a href="{% url 'my_profile' %}">👤 Profile</a> |
+<a href="{% url 'show_followers' profile.pk %}">👥 Followers</a> |
+<a href="{% url 'show_following' profile.pk %}">👤 Following</a> |
+<a href="{% url 'search' %}">🔍 Search</a> |
+</div>
+
+<h2>Posts</h2>
+
+{% for post in posts %}
+
+<div class="post" style="margin-bottom:25px;">
+
+{% if post.image %}
+<img src="{{ post.image }}" style="max-width:400px;">
+{% endif %}
+
+{% if post.caption %}
+<p><strong>{{ post.caption }}</strong></p>
+{% endif %}
+
+<p style="color:gray;font-size:14px;">
+{{ post.created_at }}
+</p>
+
+</div>
+
+<hr>
+
+{% empty %}
+<p>No posts yet.</p>
+
+{% endfor %}
+
+{% if user.profile != profile %}
+
+    {% if user.profile in profile.followers.all %}
+        <a href="{% url 'delete_follow' profile.pk %}">Unfollow</a>
+    {% else %}
+        <a href="{% url 'follow' profile.pk %}">Follow</a>
+    {% endif %}
+
+{% endif %}
 {% endblock %}

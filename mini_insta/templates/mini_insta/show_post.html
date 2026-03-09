@@ -1,21 +1,20 @@
 <!-- mini_insta/templates/mini_insta/show_post.html -->
+ {% extends 'mini_insta/base.html' %}
 
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ post.user.username }}'s Post</title>
-</head>
-<body>
-    <h1>{{ post.user.username }}</h1> <!-- Author -->
+{% block content %}
 
-    {% if post.image %}
-        <img src="{{ object.image_url }}" alt="Post image" style="max-width:500px;">
-    {% endif %}
+<h1>{{ post.profile.display_name }}</h1>
 
-    {% if post.caption %}
-        <p>{{ post.caption }}</p>
-    {% endif %}
-    
-    <p>Posted on: {{ post.created_at }}</p>
-</body>
-</html> 
+{% if post.image %}
+    <img src="{{ post.image.url }}" width="400">
+{% endif %}
+
+{% if post.caption %}
+<p>{{ post.caption }}</p>
+{% endif %}
+
+<p>Posted on: {{ post.created_at }}</p>
+
+<a href="{% url 'show_profile' post.profile.pk %}">Back to Profile</a>
+
+{% endblock %}

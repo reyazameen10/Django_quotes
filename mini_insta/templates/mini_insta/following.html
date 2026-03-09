@@ -2,17 +2,17 @@
 {% extends 'mini_insta/base.html' %}
 
 {% block content %}
-
 <h2>Following</h2>
 
-<ul>
-{% for profile in object_list %}
-    <li>
-        <a href="{% url 'show_profile' profile.pk %}">
-            {{ profile.display_name }}
-        </a>
-    </li>
-{% endfor %}
-</ul>
+{% if following %}
+    {% for follow in following %}
+        <div style="border:1px solid #ccc; padding:10px; margin:10px;">
+            <h3>{{ follow.profile.display_name }}</h3>
+            <p>{{ follow.profile.bio_text }}</p>
+        </div>
+    {% endfor %}
+{% else %}
+    <p>Not following anyone yet.</p>
+{% endif %}
 
 {% endblock %}
