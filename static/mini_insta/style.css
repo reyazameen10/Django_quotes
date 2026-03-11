@@ -1,12 +1,42 @@
 body {
-    background: red !important;
-}
-
-body {
     font-family: Arial, sans-serif;
-    margin: 40px;
+    background: #fafafa;
+    margin: 0;
 }
 
-img {
-    margin: 10px;
+/* center content like instagram */
+.container {
+    width: 600px;
+    margin: auto;
+}
+
+/* post card */
+.post {
+    background: white;
+    border: 1px solid #ddd;
+    margin-top: 20px;
+    padding: 10px;
+}
+
+/* post image */
+.post img {
+    width: 100%;
+    height: auto;
+}
+
+/* profile picture */
+.profile-pic {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+}
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.profile-header img {
+    width: 120px;
+    border-radius: 50%;
 }
