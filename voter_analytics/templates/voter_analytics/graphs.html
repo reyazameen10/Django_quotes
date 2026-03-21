@@ -1,0 +1,70 @@
+
+{% extends "voter_analytics/base.html" %}
+
+{% block content %}
+
+<h1>Voter Graphs</h1>
+
+<!-- FILTER FORM (reuse from Task 2 later) -->
+<form method="get">
+    Party:
+    <select name="party">
+        <option value="">All</option>
+        {% for p in parties %}
+            <option value="{{ p }}">{{ p }}</option>
+        {% endfor %}
+    </select>
+
+    Min Year:
+    <select name="min_dob">
+        <option value="">Any</option>
+        {% for y in years %}
+            <option value="{{ y }}">{{ y }}</option>
+        {% endfor %}
+    </select>
+
+    Max Year:
+    <select name="max_dob">
+        <option value="">Any</option>
+        {% for y in years %}
+            <option value="{{ y }}">{{ y }}</option>
+        {% endfor %}
+    </select>
+
+    Score:
+    <select name="voter_score">
+        <option value="">Any</option>
+        {% for i in "012345"|make_list %}
+            <option value="{{ i }}">{{ i }}</option>
+        {% endfor %}
+    </select>
+
+    <br><br>
+
+    <label><input type="checkbox" name="v20state"> 2020 State</label>
+    <label><input type="checkbox" name="v21town"> 2021 Town</label>
+    <label><input type="checkbox" name="v21primary"> 2021 Primary</label>
+    <label><input type="checkbox" name="v22general"> 2022 General</label>
+    <label><input type="checkbox" name="v23town"> 2023 Town</label>
+
+    <br><br>
+    <button type="submit">Filter</button>
+</form>
+
+<hr>
+
+<h1>TEST GRAPH PAGE</h1>
+<!-- GRAPHS -->
+<h2>Birth Year Distribution</h2>
+{{ graph1|safe }}
+
+<h2>Party Distribution</h2>
+{{ graph2|safe }}
+
+<h2>Election Participation</h2>
+{{ graph3|safe }}
+
+<br>
+<a href="{% url 'voters' %}">Back to Voters</a>
+
+{% endblock %}

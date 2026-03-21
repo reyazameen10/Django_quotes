@@ -1,0 +1,176 @@
+[
+{
+  "model": "auth.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$RAJEf4vjjb95P5vyIjygRb$qZnzWkcK8MTFF0DGR/CjyE9EIUy6eUvDZlLhnhBYpNE=",
+    "last_login": "2026-03-10T21:47:06.544Z",
+    "is_superuser": true,
+    "username": "admin",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-03-09T07:24:59.383Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$DlcGb1UlcYL8mV0Ok3h4i2$X5dMLmbf1yy69IkW3xmvnhoFkbkAvVMkEQTjWImb5HY=",
+    "last_login": "2026-03-11T05:58:07.001Z",
+    "is_superuser": false,
+    "username": "del_ara",
+    "first_name": "del",
+    "last_name": "ara",
+    "email": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-03-09T07:28:28Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 3,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$iS8DCQitLiDxjDMicfaXtL$NyyEFjr6nKS5FKXakdhfD1goBgCc7iSOstchHGlwblk=",
+    "last_login": "2026-03-09T07:40:19.796Z",
+    "is_superuser": false,
+    "username": "candy_the_grey",
+    "first_name": "Candy",
+    "last_name": "The Grey",
+    "email": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-03-09T07:33:31Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 4,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$YyI2HAYhKHNtsC9IrjAoGD$x7GARZJtehIK+i4wm5bJBkzyWuchoGuqz2h0bSmI2Jg=",
+    "last_login": "2026-03-09T07:36:29Z",
+    "is_superuser": false,
+    "username": "Mik_Smith",
+    "first_name": "Mike",
+    "last_name": "Smith",
+    "email": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-03-09T07:36:14Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 5,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$0Jv9gVEORgGvPMd12me9VF$+Sm0EHANH1A0XywTGottbztyHGSpTXLcxEEbbIxPx3g=",
+    "last_login": "2026-03-09T07:37:48Z",
+    "is_superuser": false,
+    "username": "nature_fun_page",
+    "first_name": "Nature",
+    "last_name": "Fun_Page",
+    "email": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-03-09T07:37:29Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 6,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$DsON9lmt1fHLnqsJxYbKFu$DBMn5u3DoL8uBUATBdOnB6ihZH/8IvXk5wEDX2ycWGk=",
+    "last_login": "2026-03-11T06:05:03.824Z",
+    "is_superuser": true,
+    "username": "testuser",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-03-10T20:27:02.635Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "mini_insta.profile",
+  "pk": 1,
+  "fields": {
+    "user": 2,
+    "display_name": "Del Ara",
+    "profile_image_url": "https://picsum.photos/600/200",
+    "bio_text": "",
+    "join_date": "2026-03-09"
+  }
+},
+{
+  "model": "mini_insta.profile",
+  "pk": 2,
+  "fields": {
+    "user": 1,
+    "display_name": "",
+    "profile_image_url": "",
+    "bio_text": "",
+    "join_date": "2026-03-09"
+  }
+},
+{
+  "model": "mini_insta.profile",
+  "pk": 3,
+  "fields": {
+    "user": 3,
+    "display_name": "Candy The Grey",
+    "profile_image_url": "https://picsum.photos/600/345",
+    "bio_text": "The Grey Hound is the fastest",
+    "join_date": "2026-03-09"
+  }
+},
+{
+  "model": "mini_insta.profile",
+  "pk": 4,
+  "fields": {
+    "user": 4,
+    "display_name": "Mike",
+    "profile_image_url": "https://picsum.photos/600/310",
+    "bio_text": "",
+    "join_date": "2026-03-09"
+  }
+},
+{
+  "model": "mini_insta.profile",
+  "pk": 5,
+  "fields": {
+    "user": 5,
+    "display_name": "Nature",
+    "profile_image_url": "https://picsum.photos/600/300",
+    "bio_text": "Summer vibes",
+    "join_date": "2026-03-09"
+  }
+},
+{
+  "model": "mini_insta.profile",
+  "pk": 6,
+  "fields": {
+    "user": 6,
+    "display_name": "Test User",
+    "profile_image_url": "https://picsum.photos/200",
+    "bio_text": "It is for the professor to check the assignment",
+    "join_date": "2026-03-10"
+  }
+}
+]

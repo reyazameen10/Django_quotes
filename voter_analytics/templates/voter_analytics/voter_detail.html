@@ -1,0 +1,34 @@
+<!--reyam/ voter_analytics/ voter_detail.html-->
+
+{% extends "voter_analytics/base.html" %}
+
+{% block content %}
+
+<h1>{{ object.first_name }} {{ object.last_name }}</h1>
+
+<p>Address: {{ object.street_number }} {{ object.street_name }}</p>
+<p>ZIP: {{ object.zip_code }}</p>
+
+<p>Date of Birth: {{ object.dob }}</p>
+<p>Registration Date: {{ object.registration_date }}</p>
+
+<p>Party: {{ object.party_affiliation }}</p>
+<p>Voter Score: {{ object.voter_score }}</p>
+
+<h3>Voting History</h3>
+<p>2020 State: {{ object.v20state }}</p>
+<p>2021 Town: {{ object.v21town }}</p>
+<p>2021 Primary: {{ object.v21primary }}</p>
+<p>2022 General: {{ object.v22general }}</p>
+<p>2023 Town: {{ object.v23town }}</p>
+
+<!-- Google Maps link -->
+<a href="https://www.google.com/maps/search/?api=1&query={{ object.street_number }}+{{ object.street_name }}+{{ object.zip_code }}"
+   target="_blank">
+   View on Google Maps
+</a>
+
+<br><br>
+<a href="{% url 'voters' %}">Back to list</a>
+
+{% endblock %}

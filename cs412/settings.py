@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'restaurant',  
     'quotes',
-    'mini_insta', #new app
+    'mini_insta', 
+    'voter_analytics' #new app
 ]
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
