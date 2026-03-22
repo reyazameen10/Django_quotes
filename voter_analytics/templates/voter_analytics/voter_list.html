@@ -1,0 +1,23 @@
+
+
+{% extends "voter_analytics/base.html" %}
+
+{% block content %}
+<h1>Voter List</h1>
+
+{% for voter in voters %}
+    <div>
+        <a href="{% url 'voter_analytics:voter' voter.pk %}">
+            {{ voter.first_name }} {{ voter.last_name }}
+        </a><br>
+        Address: {{ voter.street_number }} {{ voter.street_name }}<br>
+        Date of Birth: {{ voter.date_of_birth }}<br>
+        Party: {{ voter.party_affiliation }}<br>
+        Score: {{ voter.voter_score }}
+        <hr>
+    </div>
+{% empty %}
+    <p>No voters found.</p>
+{% endfor %}
+
+{% endblock %}

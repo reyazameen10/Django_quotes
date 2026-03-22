@@ -1,3 +1,5 @@
+<!--reyam/ voter_analytics / graphs.html-->
+
 
 {% extends "voter_analytics/base.html" %}
 
@@ -53,7 +55,6 @@
 
 <hr>
 
-<h1>TEST GRAPH PAGE</h1>
 <!-- GRAPHS -->
 <h2>Birth Year Distribution</h2>
 {{ graph1|safe }}
@@ -65,6 +66,6 @@
 {{ graph3|safe }}
 
 <br>
-<a href="{% url 'voters' %}">Back to Voters</a>
+<a href="{% url 'voter_analytics:voters' %}">Back to Voters</a>
 
 {% endblock %}

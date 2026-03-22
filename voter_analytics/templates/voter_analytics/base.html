@@ -1,7 +1,11 @@
+<!--reyam/ voter_analytics/ base.html-->
+
 <!DOCTYPE html>
 <html>
 <head>
     <title>Voter Analytics</title>
+
+<!-- css part-->
 
     <style>
         body {
@@ -52,8 +56,8 @@
 <body>
 
 <header>
-    <a href="{% url 'voters' %}">Show Voter List</a>
-    <a href="{% url 'graphs' %}">Show Graphs</a>
+    <a href="{% url 'voter_analytics:voters' %}">Show Voter List</a>
+    <a href="{% url 'voter_analytics:graphs' %}">Show Graphs</a>
 </header>
 
 <div class="container">

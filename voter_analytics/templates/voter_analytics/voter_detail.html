@@ -4,31 +4,34 @@
 
 {% block content %}
 
-<h1>{{ object.first_name }} {{ object.last_name }}</h1>
+<h1>{{ voter.first_name }} {{ voter.last_name }}</h1>
 
-<p>Address: {{ object.street_number }} {{ object.street_name }}</p>
-<p>ZIP: {{ object.zip_code }}</p>
+<p><b>Address:</b> {{ voter.street_number }} {{ voter.street_name }}</p>
+<p><b>ZIP:</b> {{ voter.zip_code }}</p>
 
-<p>Date of Birth: {{ object.dob }}</p>
-<p>Registration Date: {{ object.registration_date }}</p>
+<p><b>Date of Birth:</b> {{ voter.date_of_birth }}</p>
+<p><b>Registration Date:</b> {{ voter.registration_date }}</p>
 
-<p>Party: {{ object.party_affiliation }}</p>
-<p>Voter Score: {{ object.voter_score }}</p>
+<p><b>Party:</b> {{ voter.party_affiliation }}</p>
+<p><b>Voter Score:</b> {{ voter.voter_score }}</p>
 
 <h3>Voting History</h3>
-<p>2020 State: {{ object.v20state }}</p>
-<p>2021 Town: {{ object.v21town }}</p>
-<p>2021 Primary: {{ object.v21primary }}</p>
-<p>2022 General: {{ object.v22general }}</p>
-<p>2023 Town: {{ object.v23town }}</p>
 
-<!-- Google Maps link -->
-<a href="https://www.google.com/maps/search/?api=1&query={{ object.street_number }}+{{ object.street_name }}+{{ object.zip_code }}"
-   target="_blank">
-   View on Google Maps
+<p>2020 State: {{ voter.v20state }}</p>
+<p>2021 Town: {{ voter.v21town }}</p>
+<p>2021 Primary: {{ voter.v21primary }}</p>
+<p>2022 General: {{ voter.v22general }}</p>
+<p>2023 Town: {{ voter.v23town }}</p>
+
+<br>
+<!-- google map-->
+<a href="https://www.google.com/maps/search/?api=1&query={{ voter.street_number }}+{{ voter.street_name }}+{{ voter.zip_code }}"
+target="_blank">
+ View on Google Maps
 </a>
 
 <br><br>
-<a href="{% url 'voters' %}">Back to list</a>
+
+<a href="{% url 'voter_analytics:voters' %}">← Back to Voter List</a>
 
 {% endblock %}

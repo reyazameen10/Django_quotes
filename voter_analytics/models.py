@@ -1,3 +1,4 @@
+#reyam/ voter_analytics/models.py
 from django.db import models
 import csv
 from datetime import datetime
@@ -13,10 +14,10 @@ class Voter(models.Model):
     apartment_number = models.CharField(max_length=10, blank=True, null=True)
     zip_code = models.CharField(max_length=10)
     date_of_birth = models.DateField(null=True, blank=True)
-    dob = models.DateField()
     registration_date = models.DateField()
     party_affiliation = models.CharField(max_length=2)
     precinct_number = models.CharField(max_length=5)
+    image_url = models.URLField(blank=True, null=True) #added this line because I got multiple error due to image url
 
     
     # Participation (Stored as Booleans)
@@ -49,7 +50,7 @@ def load_data():
                         street_name=row['Residential Address - Street Name'],
                         apartment_number=row['Residential Address - Apartment Number'],
                         zip_code=row['Residential Address - Zip Code'],
-                        dob=datetime.strptime(row['Date of Birth'], '%Y-%m-%d').date(),
+                        date_of_birth=datetime.strptime(row['Date of Birth'], '%Y-%m-%d').date(),
                         registration_date=datetime.strptime(row['Date of Registration'], '%Y-%m-%d').date(),
                         party_affiliation=row['Party Affiliation'].strip(),
                         precinct_number=row['Precinct Number'],
