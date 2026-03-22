@@ -22,5 +22,5 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('mini_insta/', include('mini_insta.urls')),
-    path('reyam/voter_analytics/', include('voter_analytics.urls')), #new
+    path('voter_analytics/', include('voter_analytics.urls')), #new
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
