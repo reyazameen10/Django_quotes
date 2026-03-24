@@ -4,6 +4,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, TemplateView
 from django.urls import reverse
+from django.urls import path, include
+from django.contrib.auth import views as auth_views
 
 from .models import Profile, Post, Like, Follow
 from .forms import CreatePostForm
@@ -34,7 +36,7 @@ def edit_profile(request):
 # Mixin for login and profile
 # ---------------------------
 class MiniInstaLoginRequiredMixin(LoginRequiredMixin):
-    login_url = '/mini_insta/login/'
+    login_url = '/accounts/login/'
 
     def get_login_url(self):
         return self.login_url

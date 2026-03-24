@@ -1,7 +1,7 @@
 
 # mini_insta/urls.py
 
-from django.urls import path
+from django.urls import path, include
 from django.contrib.auth import views as auth_views
 from . import views
 
@@ -20,6 +20,7 @@ urlpatterns = [
     path('', ProfileListView.as_view(), name='show_all_profiles'),
     path('my_profile/', views.MyProfileView.as_view(), name='my_profile'),
     path('profile/<int:pk>/', ProfileDetailView.as_view(), name='show_profile'),
+    path('accounts/', include('django.contrib.auth.urls')),
 
     path('profile/<int:pk>/create_post/', CreatePostView.as_view(), name="create_post"),
 
