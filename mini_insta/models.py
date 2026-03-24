@@ -91,7 +91,9 @@ class Like(models.Model):
     def __str__(self):
         return f"{self.profile} likes {self.post}"
     
-    @receiver(post_save, sender=User)
-    def create_profile(sender, instance, created, **kwargs):
-        if created:
-         Profile.objects.create(user=instance)
+#the creat profile was not working so I added this part
+
+@receiver(post_save, sender=User)
+def create_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)

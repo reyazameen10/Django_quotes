@@ -33,6 +33,8 @@ urlpatterns = [
 
     path('profile/<int:pk>/following/', FollowingListView.as_view(), name='show_following'),
 
+    path('profile/edit/', views.edit_profile, name='edit_profile'),
+
     path('search/', SearchView.as_view(), name='search'),
 
     path(
@@ -56,4 +58,19 @@ urlpatterns = [
         ),
         name='logout'
     ),
+    path('profile/<int:pk>/follow',
+        views.AddFollowView.as_view(),
+        name='follow'),
+
+    path('profile/<int:pk>/delete_follow',
+        views.DeleteFollowView.as_view(),
+        name='delete_follow'),
+
+    path('post/<int:pk>/like',
+        views.AddLikeView.as_view(),
+        name='like'),
+
+    path('post/<int:pk>/delete_like',
+        views.DeleteLikeView.as_view(),
+        name='delete_like'),
 ]

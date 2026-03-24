@@ -1,7 +1,7 @@
 # mini_insta/views.py
 
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render, redirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, TemplateView
 from django.urls import reverse
 
@@ -12,8 +12,23 @@ from .models import Like
 from django.shortcuts import redirect
 from .models import Follow
 from django.views.generic import TemplateView
+from .forms import ProfileForm
 
 from .models import Profile
+
+#for editing profile 
+def edit_profile(request):
+    profile, created = Profile.objects.get_or_create(user=request.user)
+
+    if request.method == "POST":
+        form = ProfileForm(request.POST, instance=profile)
+        if form.is_valid():
+            form.save()
+            return redirect('my_profile')
+    else:
+        form = ProfileForm(instance=profile)
+
+    return render(request, 'mini_insta/edit_profile.html', {'form': form})
 
 
 # Mixin for login and profile
@@ -252,3 +267,5 @@ class AddFollowView(LoginRequiredMixin, View):
             )
 
         return redirect('show_profile', pk=other_profile.pk)
+    
+
