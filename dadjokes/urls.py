@@ -8,7 +8,7 @@ from . import views
 urlpatterns = [
     path('', views.random_view),
     path('random/', views.random_view),
-    path('api', views.api_view, name='dadjokes-api'),
+    path('api', views.api_view),
     path('jokes/', views.jokes_list),
     
   path('joke/<int:pk>/', views.joke_detail),
