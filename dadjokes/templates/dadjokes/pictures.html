@@ -1,0 +1,12 @@
+<!-- dadjokes/ pictures.html/ reyam/ CS412-->
+ <h1>All Pictures</h1>
+
+ { %for pic in pictures% }
+
+<a href="/picture/ {pic.id}">
+
+    <img src="{{pic.image_url}}" width="200">
+</a>
+{% endfor %}
+
+

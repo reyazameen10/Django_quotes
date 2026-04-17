@@ -18,4 +18,15 @@
     </div>
 {% endfor %}
 
+<p>{{ post.caption }}</p>
+
+{% if user.profile != post.profile %}
+
+    {% if user.profile in post.like_set.all %}
+        <a href="{% url 'delete_like' post.pk %}">Unlike</a>
+    {% else %}
+        <a href="{% url 'like' post.pk %}">Like</a>
+    {% endif %}
+
+{% endif %}
 {% endblock %}

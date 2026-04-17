@@ -10,6 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
+
+
 from pathlib import Path
 import os
 
@@ -17,8 +19,6 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-1a295!0hb%i68$%*v#(w&w=ts)#a$h=8w#xy65@61qqx9^5a@('
@@ -26,8 +26,8 @@ SECRET_KEY = 'django-insecure-1a295!0hb%i68$%*v#(w&w=ts)#a$h=8w#xy65@61qqx9^5a@(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['cs-webapps.bu.edu', '*']
-
+ALLOWED_HOSTS = ["*", "localhost", "127.0.0.1", "10.247.246.236", "10.247.246.236:8000"]
+print("SETTINGS LOADED, ALLOWED_HOSTS:", ALLOWED_HOSTS)
 
 # Application definition
 
@@ -41,7 +41,10 @@ INSTALLED_APPS = [
     'restaurant',  
     'quotes',
     'mini_insta', 
-    'voter_analytics' #new app
+    'voter_analytics',  
+    'rest_framework', #new: django rest framework
+    'rest_framework.authtoken', #new: for token authentication
+    'dadjokes', #new: for dad jokes app
 ]
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -143,3 +146,13 @@ if socket.gethostname() == CS_DEPLOYMENT_HOSTNAME:
 LOGIN_URL = '/mini_insta/login/'
 LOGIN_REDIRECT_URL = '/mini_insta/my_profile/'
 LOGOUT_REDIRECT_URL = '/mini_insta/'
+
+# the rest_framework for pagination
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_PAGINATION_CLASS':
+    'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10
+}

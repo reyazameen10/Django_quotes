@@ -5,6 +5,7 @@ from django.urls import path, include
 from django.contrib.auth import views as auth_views
 from . import views
 
+
 from .views import (
     ProfileListView,
     ProfileDetailView,
@@ -13,7 +14,12 @@ from .views import (
     ProfileFeedView,
     FollowersListView,
     FollowingListView,
-    SearchView
+    SearchView,
+    PostListAPIView,
+    PostDetailAPIView,
+    ProfileListAPIView,
+    ProfileDetailAPIView,
+    ProfileFeedAPIView
 )
 
 urlpatterns = [
@@ -74,4 +80,13 @@ urlpatterns = [
     path('post/<int:pk>/delete_like',
         views.DeleteLikeView.as_view(),
         name='delete_like'),
+
+    #API views :
+    path(r'api/posts/', PostListAPIView.as_view()),
+    path(r'api/post/<int:pk>', PostDetailAPIView.as_view()),
+    path('api/profiles/', ProfileListAPIView.as_view()),
+    path('api/profile/<int:pk>/', ProfileDetailAPIView.as_view()),
+    path('api/profile/<int:pk>/feed/', ProfileFeedAPIView.as_view()),
+    path('api/login/', views.api_login),
+    
 ]

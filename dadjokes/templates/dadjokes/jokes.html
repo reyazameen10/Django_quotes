@@ -1,0 +1,12 @@
+<!-- dadjokes/ jokes.html /reyam /CS412-->
+
+<h1>All Jokes</h1>
+{% for joke in jokes %}
+<p>
+    <a href="/joke/{{ joke.id}}">
+        {{ joke.text}}
+    </a>
+
+</p>
+
+{% endfor %}

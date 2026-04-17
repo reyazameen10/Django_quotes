@@ -4,8 +4,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, TemplateView
 from django.urls import reverse
-from django.urls import path, include
-from django.contrib.auth import views as auth_views
 
 from .models import Profile, Post, Like, Follow
 from .forms import CreatePostForm
@@ -16,7 +14,97 @@ from .models import Follow
 from django.views.generic import TemplateView
 from .forms import ProfileForm
 
+
+from rest_framework import status
+
+
 from .models import Profile
+#API views
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import TokenAuthentication
+from django.contrib.auth import authenticate
+from rest_framework.authtoken.models import Token
+#Login API
+from rest_framework.decorators import api_view, permission_classes, api_view
+from rest_framework.response import Response
+
+
+# API view for user login and token generation
+@api_view(['POST'])
+def api_login(request):
+    username = request.data.get('username')
+    password = request.data.get('password')
+
+    user = authenticate(username=username, password=password)
+    print(f"API Login attempt for username: {username}, success: {user is not None}")
+    if user:
+        token, _ = Token.objects.get_or_create(user=user)
+        return Response({
+            'token': token.key,
+            'user_id': user.id
+        }, status=status.HTTP_200_OK)
+
+    return Response(
+        {'error': 'Invalid credentials'},
+        status=status.HTTP_401_UNAUTHORIZED
+    )
+
+
+#API view to create a post with authentication
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def create_post(request):
+    if request.method == 'POST':
+        caption = request.data.get('caption')
+        image = request.FILES.get('image')
+
+        post = Post.objects.create(
+            caption=caption,
+            image=image
+        )
+
+        return Response({'message': 'Post created'})
+#REST API for serializer
+
+from rest_framework import generics
+from .serializers import PostSerializer, ProfileSerializer  # new import the serializer for the Profile model
+
+
+#List API view for Profile
+class ProfileListAPIView(generics.ListAPIView):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
+
+#Detail API view for Profile
+
+class ProfileDetailAPIView(generics.RetrieveAPIView):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
+
+#Post API views
+
+class PostListAPIView(generics.ListCreateAPIView):
+    '''
+    An PAI view to return a listing of Posts and to create and Post.
+    '''
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+# Override the perform_create method to associate the post with the authenticated user's profile
+
+    def perform_create(self, serializer):
+        profile = Profile.objects.get(user=self.request.user)
+        serializer.save(profile=profile)
+
+
+
+#Detail class
+class PostDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+
 
 #for editing profile 
 def edit_profile(request):
@@ -31,10 +119,17 @@ def edit_profile(request):
         form = ProfileForm(instance=profile)
 
     return render(request, 'mini_insta/edit_profile.html', {'form': form})
+# Feed API views
+class ProfileFeedAPIView(generics.ListAPIView):
+    serializer_class = PostSerializer
 
+    def get_queryset(self):
+        pk = self.kwargs['pk']
+        profile = Profile.objects.get(pk=pk)
+
+        return Post.objects.filter(profile=profile).order_by('-created_at')
 
 # Mixin for login and profile
-# ---------------------------
 class MiniInstaLoginRequiredMixin(LoginRequiredMixin):
     login_url = '/accounts/login/'
 
@@ -82,9 +177,8 @@ class UpdateProfileView(MiniInstaLoginRequiredMixin, UpdateView):
         return get_object_or_404(Profile, user=self.request.user)
 
 
-# ---------------------------
 # Profile Feed / Followers / Following
-# ---------------------------
+
 class ProfileFeedView(ListView):
     model = Post
     template_name = "mini_insta/profile_feed.html"

@@ -1,4 +1,4 @@
-
+#reyam/ voter_analytics/views.py 
 
 from django.views.generic import ListView, DetailView
 from .models import Voter
@@ -6,7 +6,7 @@ from datetime import datetime
 import plotly.express as px
 from django.utils.safestring import mark_safe
 
-# ── helper so we don't repeat filtering logic twice ──────────────────
+# helper so we don't repeat filtering logic twice
 def apply_filters(qs, GET):
     '''Apply GET filter params to a Voter queryset and return it.'''
     party      = GET.get('party')
@@ -17,9 +17,9 @@ def apply_filters(qs, GET):
     if party:
         qs = qs.filter(party_affiliation=party)
     if min_dob:
-        qs = qs.filter(date_of_birth__year__gte=min_dob)  # ← fixed
+        qs = qs.filter(date_of_birth__year__gte=min_dob) 
     if max_dob:
-        qs = qs.filter(date_of_birth__year__lte=max_dob)  # ← fixed
+        qs = qs.filter(date_of_birth__year__lte=max_dob) 
     if score:
         qs = qs.filter(voter_score=score)
 
@@ -29,7 +29,7 @@ def apply_filters(qs, GET):
 
     return qs
 
-
+# we need the class for voterslistview
 class VoterListView(ListView):
     '''Display a paginated, filterable list of Voters.'''
     model            = Voter
@@ -48,7 +48,7 @@ class VoterListView(ListView):
         context['years']   = range(1920, datetime.now().year + 1)
         context['parties'] = Voter.objects.values_list(
                                 'party_affiliation', flat=True).distinct()
-        # keep previously selected values in form
+        #from prev form
         context['selected_party']      = self.request.GET.get('party', '')
         context['selected_min_dob']    = self.request.GET.get('min_dob', '')
         context['selected_max_dob']    = self.request.GET.get('max_dob', '')
@@ -68,7 +68,7 @@ class GraphView(ListView):
     model            = Voter
     template_name    = 'voter_analytics/graphs.html'
     context_object_name = 'voters'
-    paginate_by      = None   # ← IMPORTANT: don't paginate for graphs!
+    paginate_by      = None   # that part I had a lot of issue, be careful here
 
     def get_queryset(self):
         '''Return filtered Voter queryset for graphing.'''
@@ -78,10 +78,10 @@ class GraphView(ListView):
     def get_context_data(self, **kwargs):
         '''Build plotly graphs and add to context.'''
         context = super().get_context_data(**kwargs)
-        qs = self.get_queryset()  # ← use full queryset, not paginated!
+        qs = self.get_queryset()  #use full queryset, not paginated
 
         # 1. Birth Year Histogram
-        years = [v.date_of_birth.year for v in qs if v.date_of_birth]  # ← fixed
+        years = [v.date_of_birth.year for v in qs if v.date_of_birth]
         fig1  = px.histogram(x=years, nbins=50, title="Birth Year Distribution",
                              labels={'x': 'Year', 'y': 'Count'})
         context['graph1'] = mark_safe(fig1.to_html(full_html=False))
